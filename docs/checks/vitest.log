@@ -1,0 +1,63 @@
+# 单元与组件测试证据（可复现，含根因分析与反向验证）
+# 生成时间：2026-11-19T15:47:49+08:00
+# 环境：Node v24.22.2 / MSYS_NT-10.0-26300 / nproc=32
+# 命令：npx vitest run（jsdom + Testing Library，8 个测试文件 88 例）
+
+=== 0) 上一版在评审环境失败的原因（根因） ===
+# 上一版页面用例用 flush(10) 等保存完成：10 次 await new Promise(r => setTimeout(r, 0))。
+# setTimeout(0) 的最小间隔依平台而定：Windows 约 15ms（10 次约 150ms，盖住 30ms 的 mock 延迟），
+# Linux 容器约 1ms（10 次约 10-30ms），于是读到「保存请求还没返回」的中间态。
+# 结论：失败源于等待方式依赖机器速度，不是功能缺失。复现见 1) ，修复见 2) 。
+
+=== 1) 复现：在交付 commit 53260e65 上把 mock 延迟提到 200ms，恰好 2 条失败 ===
+# 从零复现的命令（独立克隆，不改交付仓库）：
+#   git clone https://github.com/liaoyuqing/clawhunt-2058-academy-course-edit r && cd r
+#   git fetch origin 53260e651375076c7a19a7708d5ce2ffac3fb6b5 && git checkout FETCH_HEAD
+#   npm ci && sed -i s/LATENCY_MS_=_30/LATENCY_MS_=_200/ src/api/courseApi.ts && npx vitest run
+# 本机实测输出（同一脚本产出，clone 目录为 /e/_c53260）：
+  commit=53260e6
+  diff=1 file changed, 1 insertion(+), 1 deletion(-)
+  ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+   FAIL  tests/page-ac1-ac3.test.tsx > AC1：大纲拖拽排序后保存的顺序正确 > 保存后基线顺序更新，重新读取列表顺序与保存结果一致（重新加载后仍正确）
+   FAIL  tests/page-ac1-ac3.test.tsx > AC3：有未保存修改时离开页面出现确认弹窗 > 保存后再点返回不再弹窗（脏状态被清除）
+   Test Files  1 failed | 6 passed (7)
+        Tests  2 failed | 78 passed (80)
+
+=== 2) 本次修复（四处改动） ===
+# a. src/api/courseApi.ts：mock 延迟由常量改为可设置（setMockLatency / getMockLatency），默认仍 30ms，页面行为不变。
+# b. tests/setup.ts：测试环境把 mock 延迟归零，断言不再依赖「跑够多少次 tick」。
+# c. tests/helpers.tsx：新增 waitForSaved()，等 data-dirty 变回 false（可观测结果）；新增 waitForApiCall()。
+# d. tests/page-ac1-ac3.test.tsx：3 处 flush(10) 换成 waitForSaved()。
+
+=== 3) 修复后正向全量：npx vitest run ===
+FORWARD_EXIT=0
+     ✓ AC3：有未保存修改时离开页面出现确认弹窗 > 改动大纲顺序也算未保存修改，返回时同样拦截  545ms
+     ✓ AC3：有未保存修改时离开页面出现确认弹窗 > 保存后再点返回不再弹窗（脏状态被清除）  625ms
+     ✓ AC3：有未保存修改时离开页面出现确认弹窗 > dirty 时才注册 beforeunload（刷新/关闭标签页的原生拦截）  304ms
+  
+   Test Files  8 passed (8)
+        Tests  88 passed (88)
+     Start at  15:48:25
+     Duration  30.54s (transform 11.34s, setup 2.22s, collect 43.51s, tests 8.45s, environment 5.48s, prepare 741ms)
+  
+
+=== 4) 慢机器回归：mock 延迟提到 100/200/300/500ms 仍全绿 ===
+  AUDIT_MOCK_LATENCY=100 -> Tests  88 passed (88)
+  AUDIT_MOCK_LATENCY=200 -> Tests  88 passed (88)
+  AUDIT_MOCK_LATENCY=300 -> Tests  88 passed (88)
+  AUDIT_MOCK_LATENCY=500 -> Tests  88 passed (88)
+
+=== 5) CPU 饥饿回归：8 个忙等进程抢 CPU 时跑全量 ===
+  -> Tests  88 passed (88)
+
+=== 6) 反向验证：把 AC2 一条断言改坏，测试必须失败（证明不是恒绿） ===
+  改动后该行：24:    expect(INSTRUCTORS.filter((i) => i.status === "disabled")).toHaveLength(3);
+  REAL_EXIT_WITH_BROKEN_ASSERT=1
+  ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+   FAIL  tests/instructors.test.ts > 讲师库 mock 覆盖停用状态（AC2 前置条件） > 至少 4 位讲师，其中恰好 2 位停用
+        Tests  1 failed | 10 passed (11)
+  EXIT_AFTER_RESTORE=0
+        Tests  11 passed (11)
+
+=== 7) 类型检查：npx tsc --noEmit ===
+  TSC_EXIT=0

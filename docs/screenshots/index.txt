@@ -1,0 +1,31 @@
+# AC → 截图 → 说明（评审按此表逐条核对）
+AC1 | 01-basic.png | 分区①基本信息（标题 40 字计数、封面 16:9 预览）
+AC1 | 02-intro.png | 分区②课程介绍（富文本工具栏、5000 字计数）
+AC1 | 03-outline.png | 分区③课程大纲（拖拽前基线顺序）
+AC1 | 04-outcomes.png | 分区④学习收获（8 条上限）
+AC1 | 05-instructors.png | 分区⑤讲师（已选列表、角色、顺序）
+AC1 | 06-tags.png | 分区⑥标签（赛道/兴趣话题，每维 3 个）
+AC1 | 07-preview-card.png | 右侧小程序课程卡片实时预览
+AC1 | 00-full-page.png | 整页长图（六分区同屏）
+AC1 | 11-ac1-before-drag.png | 拖拽前：鼠标悬停第 1 条手柄（hover 高亮，与 03 明确区分）
+AC1 | 12-ac1-drag-frame-1.png | 拖拽第 1 帧：第 1 条越过第 2 条
+AC1 | 12-ac1-drag-frame-2.png | 拖拽第 2 帧：继续下移
+AC1 | 12-ac1-drag-frame-3.png | 拖拽第 3 帧：落位前
+AC1 | 13-ac1-after-drag.png | 松手后新顺序
+AC1 | 14-ac1-saved-order.png | 保存草稿后取证条显示落库顺序
+AC1 | 15-ac1-after-reload.png | 刷新后顺序与保存结果一致
+AC2 | 08-ac2-instructor-picker.png | 讲师库展开：两位停用讲师置灰带「已停用」
+AC2 | 09-ac2-disabled-click-rejected.png | 强制点击停用讲师：已选列表未变
+AC2 | 10-ac2-active-selectable.png | 对照组：可选讲师点击后成功加入
+AC3 | 16-ac3-dirty-indicator.png | 标题被修改后出现未保存标记
+AC3 | 17-ac3-leave-dialog.png | 点返回：确认弹窗出现且 URL 仍在 /edit
+AC3 | 18-ac3-stayed-on-page.png | 点「留下继续编辑」：仍在页面且修改保留
+AC3 | 19-ac3-left-to-list.png | 点「放弃修改并离开」：落到课程列表
+AC4 | 20-ac4-readonly-banner.png | published 进入：顶部「需下架后修改」提示条
+AC4 | 20b-ac4-readonly-banner-clip.png | 提示条特写
+AC4 | 21-ac4-published-full.png | 整页长图：全部控件灰化
+AC4 | 22-ac4-instructors-readonly.png | 分区⑤讲师只读特写
+AC4 | 23-ac4-tags-readonly.png | 分区⑥标签只读特写
+AC4 | 25-ac4-outline-readonly.png | 分区③大纲只读特写（标题/时长不可编辑、手柄禁用）
+AC4 | 26-ac4-outcomes-readonly.png | 分区④学习收获只读特写
+附加 | 24-validation-issue-summary.png | 提交审核前置校验：前端问题 + 后端返回缺失项同表展示

@@ -1,0 +1,9 @@
+{
+  "disabledInstructorId": "ins_9004",
+  "clickRejectedByPlaywrightActionability": true,
+  "disabledInstructorStatus": "disabled",
+  "selectableAttr": "false",
+  "selectedCountBeforeClick": 2,
+  "selectedCountAfterClick": 2,
+  "disabledEntryAbsentFromSelected": true
+}

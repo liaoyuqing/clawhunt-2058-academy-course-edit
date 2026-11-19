@@ -1,0 +1,15 @@
+# 类型检查证据（可复现，含反向验证）
+# 生成时间：2026-11-19T03:18:03+08:00
+# Node: v24.22.2
+# 命令：npx tsc --noEmit（tsconfig 开启 strict，覆盖 src 与 tests）
+
+=== 1) 正向：真实执行 tsc --noEmit ===
+EXIT=0
+(上面无任何输出 + EXIT=0 表示零类型错误)
+
+=== 2) 反向验证：临时植入一处类型错误，确认本检查不是空跑 ===
+REAL_EXIT_WITH_ERROR=2
+src/__probe_type_error.ts(1,7): error TS2322: Type 'string' is not assignable to type 'number'.
+
+=== 3) 复原：删除探针后再次执行 ===
+EXIT_AFTER_RESTORE=0

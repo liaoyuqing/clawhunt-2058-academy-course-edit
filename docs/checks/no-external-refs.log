@@ -1,0 +1,24 @@
+=== external url refs in src ===
+src/mocks/cover.ts:9:  '<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">',
+src/components/RichTextEditor.tsx:60:    const href = window.prompt('链接地址（需以 http:// 或 https:// 开头）', 'https://example.com/');
+src/components/RichTextEditor.tsx:63:      MessagePlugin.warning('链接必须以 http:// 或 https:// 开头');
+src/components/RichTextEditor.tsx:71:    const src = window.prompt('图片地址（需以 http:// 或 https:// 开头）');
+src/components/RichTextEditor.tsx:74:      MessagePlugin.warning('图片地址必须以 http:// 或 https:// 开头');
+EXIT=0
+=== font-family ===
+19:  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+35:code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+=== index.html links ===
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>工作台学院 · 课程编辑</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

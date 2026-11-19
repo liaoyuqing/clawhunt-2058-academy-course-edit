@@ -1,0 +1,10 @@
+{
+  "titleInputDisabled": true,
+  "introEditable": "false",
+  "saveDraftDisabled": true,
+  "submitDisabled": true,
+  "tagChipsAllDisabled": true,
+  "dragHandlesAllDisabled": true,
+  "outlineTitleInputsDisabled": true,
+  "outcomeInputsDisabled": true
+}

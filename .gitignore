@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.local
+.DS_Store
+
+# 内部预检/提交载荷与交付正文草稿，仅本地留存，不进仓库
+docs/submission/
+docs/precheck_payload.json
+docs/checks/precheck-final.json
+docs/solution_text.txt
+*.local
